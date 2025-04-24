@@ -1,12 +1,12 @@
 from flask import Flask
 from flask_socketio import SocketIO
-from .config import Config
+from .config import config
 
 socketio = SocketIO()
 
-def create_app(config_class=Config):
+def create_app(config_name='default'):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config.from_object(config[config_name])
     
     # Initialize extensions
     socketio.init_app(app, cors_allowed_origins="*")
