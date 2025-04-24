@@ -12,8 +12,8 @@ def create_app(config_class=Config):
     socketio.init_app(app, cors_allowed_origins="*")
     
     # Register blueprints
-    from app.routes.views import main_bp
-    app.register_blueprint(main_bp)
+    from app.routes.views import views_bp
+    app.register_blueprint(views_bp)
     
     # Import socket events
     from app.sockets import events
