@@ -7,10 +7,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Drawed!</h1>
-        <p>A place where art speaks louder than words.</p>
-        <a href="{{ url_for('views.index') }}" class="btn">Get Started</a>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Drawed</h1>
+            <p>Communicate through art</p>
+        </div>
+        
+        <div class="messages-container">
+            <div class="welcome-message">
+                <p>Welcome to the chat! Press the button below to send art.</p>
+            </div>
+            <!-- Message area will be populated with art stickers -->
+        </div>
+        
+        <div class="chat-controls">
+            <button id="send-art-btn" class="send-art-button">I'm Drawed</button>
+        </div>
     </div>
     
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
