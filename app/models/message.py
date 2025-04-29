@@ -84,9 +84,6 @@ class Message:
                 'artwork': {
                     '_id': 1,
                     'title': 1,
-                    'artist': 1,
-                    'period': 1,
-                    'year': 1,
                     'file_path': 1
                 }
             }}
