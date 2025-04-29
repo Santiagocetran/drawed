@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+.env
+
+# Flask
+instance/
+.webassets-cache
+.flaskenv
+
+# MongoDB
+*.mongodb
+*.mongodb-journal
+
+# Development files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+
+# Project-specific
+artworks/*
+!artworks/__init__.py
+logs/
+*.log
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
