@@ -8,11 +8,7 @@ class Artwork:
 
     Fields:
     - title: Name of the artwork
-    - artist: Name of the artist
-    - period: Art period/style (e.g., "Renaissance", "Impressionism")
-    - year: Year created (approx.)
     - file_path: Path to the artwork image file
-    - metadata: Additional information about the artwork
     - created_at: When this record was created
     """
 
@@ -42,15 +38,11 @@ class Artwork:
         return result[0] if result else None
 
     @staticmethod
-    def create(db, title, artist, period, year, file_path, metadata=None):
+    def create(db, title, file_path):
         """Create a new artwork record"""
         artwork = {
             'title': title,
-            'artist': artist,
-            'period': period,
-            'year': year,
             'file_path': file_path,
-            'metadata': metadata or {},
             'created_at': datetime.utcnow()
         }
 

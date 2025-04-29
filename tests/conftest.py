@@ -63,11 +63,7 @@ def test_artwork(db):
     artwork = Artwork.create(
         db,
         title="Test Artwork",
-        artist="Test Artist",
-        period="Test Period",
-        year=2023,
-        file_path="/artworks/test.jpg",
-        metadata={"description": "A test artwork."}
+        file_path="/artworks/test.jpg"
     )
     return artwork
 
