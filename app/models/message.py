@@ -47,10 +47,13 @@ class Message:
     @staticmethod
     def mark_seen(db, message_id, user_id):
         """Mark a message as seen by a user"""
-        Message.get_collection(db).update_one(
-            {'_id': ObjectId(message_id)},
-            {'$addToSet': {'seen_by': ObjectId(user_id)}}
-        )
+        try:
+            Message.get_collection(db).update_one(
+                {'_id': ObjectId(message_id)},
+                {'$addToSet': {'seen_by': ObjectId(user_id)}}
+            )
+        except Exception as e:
+            print(f"Error in mark_seen: {str(e)}")
 
     @staticmethod
     def get_with_details(db, message_id):

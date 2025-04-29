@@ -12,7 +12,10 @@ from app.models.artwork import Artwork
 
 # Sample artwork data
 SAMPLE_ARTWORKS = [
-   
+    {
+        "title": "Starry Night",
+        "file_path": "/static/artworks/starry_night.jpg"
+    },
     {
         "title": "The Scream",
         "file_path": "/static/artworks/the_scream.jpg"
@@ -44,10 +47,6 @@ SAMPLE_ARTWORKS = [
     {
         "title": "Water Lilies",
         "file_path": "/static/artworks/water_lilies.jpg"
-    },
-     {
-        "title": "Starry Night",
-        "file_path": "/static/artworks/starry_night.jpg"
     },
 
 ]
@@ -84,6 +83,13 @@ def seed_artworks():
                 print("Operation cancelled.")
                 return
 
+        # First, clear out any existing data if needed
+        clear_data = input(
+            "Do you want to clear existing artwork data? (y/n): ")
+        if clear_data.lower() == 'y':
+            Artwork.get_collection(db).delete_many({})
+            print("Cleared existing artwork data")
+
         # Insert sample artworks
         for artwork_data in SAMPLE_ARTWORKS:
             # Check if this artwork already exists
@@ -104,8 +110,6 @@ def seed_artworks():
             print(
                 f"Created artwork: {artwork['title']} (ID: {artwork['_id']})")
 
-            # Create placeholder files if they don't exist
-            # Note: In a real app, you would download actual artwork files here
             file_path = artwork_data["file_path"].replace("/static/", "")
             full_path = os.path.join(app.static_folder, file_path)
 
@@ -113,10 +117,43 @@ def seed_artworks():
                 os.makedirs(os.path.dirname(full_path))
 
             if not os.path.exists(full_path):
-                print(f"Creating placeholder file: {full_path}")
-                with open(full_path, 'w') as f:
-                    f.write(
-                        "This is a placeholder for artwork. Replace with actual image file.")
+                print(f"Creating placeholder image: {full_path}")
+
+                try:
+                    # Try to download sample artwork from placeholder service
+                    import requests
+                    # Use a more reliable placeholder service
+                    placeholder_url = f"https://picsum.photos/800/600"
+                    response = requests.get(placeholder_url, stream=True)
+                    response.raise_for_status()
+
+                    with open(full_path, 'wb') as f:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            f.write(chunk)
+
+                    print(
+                        f"✓ Downloaded image for {artwork_data['title']} to {full_path}")
+
+                except Exception as e:
+                    print(f"Failed to download image: {e}")
+                    print("Trying alternative placeholder source...")
+                    try:
+                        placeholder_url = f"https://via.placeholder.com/800x600?text={artwork_data['title'].replace(' ', '+')}"
+                        response = requests.get(placeholder_url, stream=True)
+                        response.raise_for_status()
+
+                        with open(full_path, 'wb') as f:
+                            for chunk in response.iter_content(chunk_size=8192):
+                                f.write(chunk)
+
+                        print(
+                            f"✓ Downloaded placeholder image for {artwork_data['title']}")
+                    except Exception as e2:
+                        print(f"Failed to download placeholder: {e2}")
+                        print("Creating empty file instead")
+                        with open(full_path, 'w') as f:
+                            f.write(
+                                "This is a placeholder for artwork. Replace with actual image file.")
 
         print("Artwork seeding completed.")
 

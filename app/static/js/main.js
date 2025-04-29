@@ -42,9 +42,40 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create image element
         const imgEl = document.createElement('img');
-        imgEl.src = data.artwork.file_path;
+        
+        // Fix the path - ensure it starts with /static/ if needed
+        let imgPath = data.artwork.file_path;
+        // For paths that don't have /static/ prefix and don't have http/https
+        if (!imgPath.startsWith('/static/') && !imgPath.startsWith('http')) {
+            // If it starts with a slash, prefix with static
+            if (imgPath.startsWith('/')) {
+                imgPath = '/static' + imgPath;
+            } else {
+                // Otherwise add /static/ prefix
+                imgPath = '/static/' + imgPath;
+            }
+        }
+        
+        console.log('Image path:', imgPath);
+        imgEl.src = imgPath;
         imgEl.alt = data.artwork.title;
         imgEl.className = 'artwork-image';
+        
+        // Add error handling for images
+        imgEl.onerror = function() {
+            console.error('Failed to load image:', imgPath);
+            // Try a placeholder service
+            this.src = 'https://via.placeholder.com/400x300?text=' + encodeURIComponent(data.artwork.title);
+            
+            // If placeholder also fails, replace with div
+            this.onerror = function() {
+                console.error('Placeholder also failed to load');
+                const placeholderDiv = document.createElement('div');
+                placeholderDiv.className = 'image-placeholder';
+                placeholderDiv.textContent = data.artwork.title;
+                this.parentNode.replaceChild(placeholderDiv, this);
+            };
+        };
         
         // Create title element
         const titleEl = document.createElement('div');
